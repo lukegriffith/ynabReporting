@@ -5,7 +5,7 @@ var cache = null
 
 
 async function getData(api_token, budget_id) {
-  // Query YNAB for data  
+  // Query YNAB for data and write to cache.
   
   var ynab = new ynabApi.api(api_token);
 
@@ -35,9 +35,9 @@ async function getData(api_token, budget_id) {
 }
 
 function log(content){
+  // logging routine.
 
   let t = (new Date).getTime();
-
   console.log(`${t}:\t${content}`);
 }
 
@@ -48,32 +48,30 @@ function main() {
   let TTL = process.env.cache_ttl;
   let LastCache = 0; 
 
+
+  // create HTTP server for cache
   http.createServer(function (req, res) {
 
+    // GET request
     if (req.method == 'GET') { 
       log("Cache Request.");
-      
-      if (cache == null || (LastCache + TTL) 
-        > (new Date).getTime()) {
-        
+      // Check for empty or expired cache. 
+      if (cache == null || (new Date).getTime() 
+        > (LastCache + TTL))
+      {
         log("Cache Miss.");
         getData(api_token, budget_id);
         LastCache = (new Date).getTime();
-
-
         res.writeHead(204, {'Content-Type': 'application/json'});
-
         res.end();
         return
       }
 
       res.writeHead(200, {'Content-Type': 'application/json'});
-
       res.end(cache);
-      
       log("Cache Served.");
     }
-
+    // POST request
     else if (req.method == 'POST') {
       log("Cache Update Started.");
 
@@ -92,7 +90,4 @@ function main() {
   }).listen(port);
 }
 
-
-
 main()
-
