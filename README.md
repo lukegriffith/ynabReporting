@@ -8,3 +8,5 @@ Caching service that stores a json blob in memory, refreshes on certain logic.
 
 Mainly used to stop hammering the YNAB api's 
 
+## service.dailySpend
+Calculates the daily spendings to show me how i on average spend my money during the week.
