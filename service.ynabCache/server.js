@@ -8,8 +8,12 @@ async function getData(api_token, budget_id) {
   // Query YNAB for data and write to cache.
   
   var ynab = new ynabApi.api(api_token);
+ 
+  var dateSince = new Date();
+  dateSince.setDate(1);
+  dateSince.setMonth(dateSince.getMonth()-1);
+  transactions = await ynab.transactions.getTransactions(budget_id, sinceDate=dateSince);
 
-  transactions = await ynab.transactions.getTransactions(budget_id);
 
   var options = {
     hostname: 'localhost',
