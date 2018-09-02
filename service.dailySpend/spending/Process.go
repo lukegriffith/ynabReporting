@@ -53,7 +53,7 @@ func Process (url string) {
   
 	defer resp.Body.Close()
   
-	var record TransactionsEnvelope
+	var record transactionsEnvelope
   
 	  if err := json.NewDecoder(resp.Body).Decode(&record); err != nil {
 		  log.Println(err)
@@ -64,7 +64,7 @@ func Process (url string) {
   
 	s = make(map[string]*DailySpending)
   
-	for _, t := range record.Data.Transactions {
+	for _, t := range record.Data.transactions {
 	  // Only count if an outgoing.
 	  if t.Amount < 0 { 
 		// Ynab date structure does not track time. 
@@ -87,11 +87,6 @@ func Process (url string) {
 	  }
 	}
   
-	for k, v := range s {
-  
-	  fmt.Println(k)
-	  fmt.Println("Average spend on day: £", (*v.TotalSpend / 1000 ) / *v.TotalTransactions) 
-	}
-
+	return s
 
 }

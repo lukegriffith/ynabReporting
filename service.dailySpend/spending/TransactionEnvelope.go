@@ -1,6 +1,6 @@
 package Spending
 
-type TransactionsEnvelope struct {
+type transactionsEnvelope struct {
 	Data struct {
 		Transactions []struct {
 			ID                string        `json:"id"`
