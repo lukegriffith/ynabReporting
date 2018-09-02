@@ -60,19 +60,19 @@ func main() {
 
   defer resp.Body.Close()
 
-  var record TransactionsEnvelope
+  var record Spending.TransactionsEnvelope
 
 	if err := json.NewDecoder(resp.Body).Decode(&record); err != nil {
 		log.Println(err)
 	}
 
 
-  var s map[string]*DailySpending
+  var s map[string]*Spending.DailySpending
 
-  s = make(map[string]*DailySpending)
+  s = make(map[string]*Spending.DailySpending)
 
   for _, t := range record.Data.Transactions {
-    # Only count if an outgoing.
+    // Only count if an outgoing.
     if t.Amount < 0 { 
 
       date := t.Date + "T00:00:00+00:00"
@@ -90,7 +90,7 @@ func main() {
 
         var amount = t.Amount
         var trans = 1
-        s[parsedDate.Format("Mon")] = &DailySpending{&amount, &trans}
+        s[parsedDate.Format("Mon")] = &Spending.DailySpending{&amount, &trans}
       }
       
     }
