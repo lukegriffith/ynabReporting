@@ -91,7 +91,7 @@ func Process(url string) (map[string]int, error) {
 
 	for k, v := range s {
 		// determine average and add to result map.
-		avg := (*v.TotalSpend/1000) / *v.TotalTransactions)
+		avg := (*v.TotalSpend/1000) / *v.TotalTransactions
 		result[k] = avg
 	}
 
