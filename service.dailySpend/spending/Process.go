@@ -8,7 +8,7 @@ import (
 	"time"
 )
 
-func Process(url string) (map[string]*DailySpending, Error) {
+func Process(url string) (map[string]*DailySpending, error) {
 
 	req, err := http.NewRequest("GET", url, nil)
 
