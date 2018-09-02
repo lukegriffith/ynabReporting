@@ -1,3 +1,5 @@
+package spending
+
 type DailySpending struct {
 	TotalSpend, TotalTransactions *int
 }

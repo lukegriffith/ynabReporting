@@ -1,4 +1,4 @@
-
+package spending
 
 type TransactionsEnvelope struct {
 	Data struct {
