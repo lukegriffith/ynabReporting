@@ -3,6 +3,7 @@ package main
 
 import (
   "fmt"
+  "log"
   "github.com/lukemgriffith/ynabReporting/service.dailySpend/Spending"
 )
 
@@ -13,7 +14,11 @@ import (
 
 func main() {
     
-  s := Spending.Process("http://localhost:8080/")
+  s, err := Spending.Process("http://localhost:8080/")
+
+  if err != nil { 
+    log.Fatal("Process failed: ", err)
+  }
 
   for k, v := range s {
   

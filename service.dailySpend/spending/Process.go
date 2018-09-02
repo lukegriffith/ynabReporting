@@ -20,7 +20,7 @@ func Process (url string) (map[string]*DailySpending, Error) {
   
 	  if err != nil {
 		  log.Fatal("NewRequest: ", err)
-		  return nil, errors.New("err")
+		  return nil, err
 	  }
   
 	client := &http.Client{}
