@@ -2,6 +2,7 @@ package main
 
 
 import (
+  "fmt"
   "github.com/lukemgriffith/ynabReporting/service.dailySpend/Spending"
 )
 
@@ -12,7 +13,7 @@ import (
 
 func main() {
     
-  s = Spending.Process("http://localhost:8080/")
+  s := Spending.Process("http://localhost:8080/")
 
   for k, v := range s {
   
