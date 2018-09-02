@@ -58,7 +58,7 @@ func Process(url string) (map[string]*DailySpending, error) {
 
 	s = make(map[string]*DailySpending)
 
-	for _, t := range record.Data.transactions {
+	for _, t := range record.Data.Transactions {
 		// Only count if an outgoing.
 		if t.Amount < 0 {
 			// Ynab date structure does not track time.
@@ -81,6 +81,6 @@ func Process(url string) (map[string]*DailySpending, error) {
 		}
 	}
 
-	return s
+	return s, nil
 
 }
