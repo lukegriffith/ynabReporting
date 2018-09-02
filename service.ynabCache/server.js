@@ -40,7 +40,7 @@ async function getData(api_token, budget_id, cache_days) {
 function log(content){
   // logging routine.
 
-  let t = (new Date).getTime();
+  let t = new Date();
   console.log(`${t}:\t${content}`);
 }
 
@@ -91,10 +91,21 @@ function main() {
         if (chunk != null) {
           cache += chunk;
         }
+
+        log("Loaded chunk")
       });
 
-      log("Cache Updated Finished.");
+      req.on('end', function() {
+        res.writeHead(200, {'Content-Type': 'application/json'});
+        res.end()
+        log("Cache Updated Finished.");
+      })
+      
+
+      
+      
     }
+
   }).listen(port);
 }
 

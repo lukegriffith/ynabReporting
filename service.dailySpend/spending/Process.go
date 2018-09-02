@@ -37,7 +37,7 @@ func Process(url string) (map[string]float64, error) {
 			return nil, errors.New("Non 20* response from cache.")
 		}
 
-		time.Sleep(500 * time.Millisecond)
+		time.Sleep(3 * time.Second)
 
 		resp, err = client.Do(req)
 
