@@ -2,6 +2,16 @@ package Spending
 
 
 
+import (
+	"encoding/json"
+	"fmt"
+	"log"
+	"net/http"
+	"time"
+)
+
+
+
 func Process (url string) {
 
 	req, err := http.NewRequest("GET", url, nil)
