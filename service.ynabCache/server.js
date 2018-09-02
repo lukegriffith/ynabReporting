@@ -4,15 +4,14 @@ const port = 8080;
 var cache = null
 
 
-async function getData(api_token, budget_id) {
+async function getData(api_token, budget_id, cache_days) {
   // Query YNAB for data and write to cache.
   
   var ynab = new ynabApi.api(api_token);
  
   var dateSince = new Date();
-  dateSince.setDate(1);
-  dateSince.setMonth(dateSince.getMonth()-1);
-  transactions = await ynab.transactions.getTransactions(budget_id, sinceDate=dateSince);
+  dateSince.setDate( new Date().getDate() - cache_days) ;
+  transactions = await ynab.transactions.getTransactions(budget_id, sinceDate=dateSince)
 
 
   var options = {
@@ -50,7 +49,12 @@ function main() {
   let api_token = process.env.ynab_api_token; 
   let budget_id = process.env.ynab_budget_id
   let TTL = process.env.cache_ttl;
+  let cache_days = process.env.cache_days
   let LastCache = 0; 
+
+  console.log("Cache Service Started")
+  console.log("Budget id: "+ budget_id)
+  console.log("TTL: " + TTL )
 
 
   // create HTTP server for cache
@@ -64,7 +68,7 @@ function main() {
         > (LastCache + TTL))
       {
         log("Cache Miss.");
-        getData(api_token, budget_id);
+        getData(api_token, budget_id, cache_days);
         LastCache = (new Date).getTime();
         res.writeHead(204, {'Content-Type': 'application/json'});
         res.end();

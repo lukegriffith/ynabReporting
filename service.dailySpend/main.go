@@ -107,23 +107,27 @@ func main() {
   s = make(map[string]*DailySpending)
 
   for _, t := range record.Data.Transactions {
+    # Only count if an outgoing.
+    if t.Amount < 0 { 
 
-    date := t.Date + "T00:00:00+00:00"
+      date := t.Date + "T00:00:00+00:00"
 
-    parsedDate, e := time.Parse(time.RFC3339, date)
+      parsedDate, e := time.Parse(time.RFC3339, date)
 
-    if e != nil {
-      log.Fatal("Error: ", e)
-    }
+      if e != nil {
+        log.Fatal("Error: ", e)
+      }
 
 
-    if val, ok := s[parsedDate.Format("Mon")]; ok {
-      val.AddTo(t.Amount)
-    } else {
+      if val, ok := s[parsedDate.Format("Mon")]; ok {
+        val.AddTo(t.Amount)
+      } else {
 
-      var amount = t.Amount
-      var trans = 1
-      s[parsedDate.Format("Mon")] = &DailySpending{&amount, &trans}
+        var amount = t.Amount
+        var trans = 1
+        s[parsedDate.Format("Mon")] = &DailySpending{&amount, &trans}
+      }
+      
     }
   }
 
