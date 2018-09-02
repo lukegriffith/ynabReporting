@@ -3,7 +3,8 @@ package main
 import (
 	"fmt"
 	"github.com/lukemgriffith/ynabReporting/service.dailySpend/Spending"
-	"log"
+  "log"
+  "encoding/json"
 )
 
 func main() {
@@ -14,9 +15,12 @@ func main() {
 		log.Fatal("Process failed: ", err)
 	}
 
-	for k, v := range s {
+  jsonString, err := json.Marshal(s)
 
-		fmt.Println(k)
-		fmt.Println("Average spend on day: £", (*v.TotalSpend/1000) / *v.Totaltransactions)
-	}
+  if err != nil {
+    log.Fatal("Unable to seralize json ", err)
+  }
+
+  fmt.Println(jsonString)
+
 }

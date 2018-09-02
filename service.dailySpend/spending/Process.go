@@ -44,7 +44,6 @@ func Process(url string) (map[string]*DailySpending, error) {
 
 	}
 
-	fmt.Println("200 recieved")
 
 	defer resp.Body.Close()
 
