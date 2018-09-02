@@ -9,7 +9,7 @@ import (
 	"math"
 )
 
-func Process(url string) (map[string]int, error) {
+func Process(url string) (map[string]float64, error) {
 
 	req, err := http.NewRequest("GET", url, nil)
 
@@ -86,13 +86,13 @@ func Process(url string) (map[string]int, error) {
 		}
 	}
 
-	var result map[string]int
+	var result map[string]float64
 
-	result = make(map[string]int)
+	result = make(map[string]float64)
 
 	for k, v := range s {
 		// determine average and add to result map.
-		avg := math.Abs((*v.TotalSpend/1000) / *v.TotalTransactions)
+		avg := math.Abs(float64((*v.TotalSpend/1000) / *v.TotalTransactions))
 		result[k] = avg
 	}
 
