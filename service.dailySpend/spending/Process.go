@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"time"
 	"errors"
+	"math"
 )
 
 func Process(url string) (map[string]int, error) {
@@ -91,7 +92,7 @@ func Process(url string) (map[string]int, error) {
 
 	for k, v := range s {
 		// determine average and add to result map.
-		avg := (*v.TotalSpend/1000) / *v.TotalTransactions
+		avg := math.Abs((*v.TotalSpend/1000) / *v.TotalTransactions)
 		result[k] = avg
 	}
 
