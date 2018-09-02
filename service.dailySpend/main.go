@@ -21,7 +21,7 @@ func main() {
 
   if err != nil {
     fmt.Println(err)
-    log.Fatal("Unable to seralize json ", err)
+    log.Fatal(err)
   }
 
   fmt.Println(string(jsonString))

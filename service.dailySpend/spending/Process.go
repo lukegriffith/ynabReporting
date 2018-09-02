@@ -8,7 +8,7 @@ import (
 	"errors"
 )
 
-func Process(url string) (map[string]*DailySpending, error) {
+func Process(url string) (map[string]int, error) {
 
 	req, err := http.NewRequest("GET", url, nil)
 
@@ -85,6 +85,16 @@ func Process(url string) (map[string]*DailySpending, error) {
 		}
 	}
 
-	return s, nil
+	var result map[string]int
+
+	result = make(map[string]int)
+
+	for k, v := range s {
+		// determine average and add to result map.
+		avg := (*v.TotalSpend/1000) / *v.TotalTransactions)
+		result[k] = avg
+	}
+
+	return result, nil
 
 }
