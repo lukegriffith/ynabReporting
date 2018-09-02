@@ -8,28 +8,29 @@ import (
 	"log"
 	"net/http"
 	"time"
+	"errors"
 )
 
 
 
-func Process (url string) map[string]*DailySpending {
+func Process (url string) map[string]*DailySpending, Error {
 
 	req, err := http.NewRequest("GET", url, nil)
   
   
 	  if err != nil {
 		  log.Fatal("NewRequest: ", err)
-		  return
+		  return nil, errors.New("err")
 	  }
   
 	client := &http.Client{}
   
 	resp, err := client.Do(req)
-  
-	  if err != nil {
-		  log.Print("Do: ", err)
-	  }
-  
+
+	if err != nil {
+		log.Print("Do: ", err)
+	}
+
 	status := resp.StatusCode
   
 	for {
