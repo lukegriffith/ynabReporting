@@ -9,7 +9,9 @@ import (
 
 func main() {
 
-	s, err := Spending.Process("http://localhost:8080/")
+  cache_url := "http://localhost:8080/"
+
+	s, err := Spending.Process(cache_url)
 
 	if err != nil {
 		log.Fatal("Process failed: ", err)

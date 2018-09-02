@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/http"
 	"time"
+	"errors"
 )
 
 func Process(url string) (map[string]*DailySpending, error) {
@@ -31,6 +32,10 @@ func Process(url string) (map[string]*DailySpending, error) {
 			break
 		}
 
+		if status > 300 {
+			return nil, errors.New("Non 20* response from cache.")
+		}
+
 		time.Sleep(500 * time.Millisecond)
 
 		resp, err = client.Do(req)
@@ -39,6 +44,7 @@ func Process(url string) (map[string]*DailySpending, error) {
 
 		if err != nil {
 			log.Print("Do: ", err)
+			return nil, err
 		}
 
 	}
