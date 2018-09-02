@@ -13,7 +13,7 @@ import (
 
 
 
-func Process (url string) map[string]*DailySpending, Error {
+func Process (url string) (map[string]*DailySpending, Error) {
 
 	req, err := http.NewRequest("GET", url, nil)
   
