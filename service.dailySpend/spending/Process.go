@@ -71,7 +71,7 @@ func Process(url string) (map[string]*DailySpending, error) {
 			if val, ok := s[parsedDate.Format("Mon")]; ok {
 				val.AddTo(t.Amount)
 			} else {
-				var amount = t.Amount
+				var amount = 0 - t.Amount
 				var trans = 1
 				s[parsedDate.Format("Mon")] = &DailySpending{&amount, &trans}
 

@@ -18,9 +18,10 @@ func main() {
   jsonString, err := json.Marshal(s)
 
   if err != nil {
+    fmt.Println(err)
     log.Fatal("Unable to seralize json ", err)
   }
 
-  fmt.Println(jsonString)
+  fmt.Println(string(jsonString))
 
 }
