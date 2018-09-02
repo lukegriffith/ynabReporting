@@ -9,7 +9,7 @@ import (
 	"math"
 )
 
-func Process(url string) (map[string]float64, error) {
+func Get(url string) (map[string]float64, error) {
 
 	req, err := http.NewRequest("GET", url, nil)
 
@@ -59,9 +59,9 @@ func Process(url string) (map[string]float64, error) {
 		log.Println(err)
 	}
 
-	var s map[string]*DailySpending
+	var s map[string]*dailySpending
 
-	s = make(map[string]*DailySpending)
+	s = make(map[string]*dailySpending)
 
 	for _, t := range record.Data.Transactions {
 		// Only count if an outgoing.
@@ -80,7 +80,7 @@ func Process(url string) (map[string]float64, error) {
 			} else {
 				var amount = 0 + t.Amount
 				var trans = 1
-				s[parsedDate.Format("Mon")] = &DailySpending{&amount, &trans}
+				s[parsedDate.Format("Mon")] = &dailySpending{&amount, &trans}
 
 			}
 		}

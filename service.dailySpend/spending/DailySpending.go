@@ -1,10 +1,10 @@
 package Spending
 
-type DailySpending struct {
+type dailySpending struct {
 	TotalSpend, TotalTransactions *int
 }
 
-func (s *DailySpending) AddTo(spend int) {
+func (s *dailySpending) AddTo(spend int) {
 
 	var spent = *s.TotalSpend + spend
 	var trans = *s.TotalTransactions + 1
