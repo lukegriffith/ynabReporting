@@ -8,7 +8,7 @@ import (
 	"net/http"
   "time"
 
-  "github.com/lukemgriffith/ynabReporting/service.dailySpend/spending"
+  "github.com/lukemgriffith/ynabReporting/service.dailySpend/Spending"
 )
 
 
