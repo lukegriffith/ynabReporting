@@ -1,62 +1,25 @@
 package Spending
 
 import (
-	"encoding/json"
-	"log"
-	"net/http"
-	"time"
 	"errors"
+	"log"
 	"math"
+	"time"
+
 )
 
-func Get(url string) (map[string]float64, error) {
+func Get() (map[string]float64, error) {
 
-	req, err := http.NewRequest("GET", url, nil)
-
-	if err != nil {
-		log.Fatal("NewRequest: ", err)
-		return nil, err
-	}
-
-	client := &http.Client{}
-
-	resp, err := client.Do(req)
+	cacheClient, err := Spending.GetCacheClient()
 
 	if err != nil {
-		log.Print("Do: ", err)
+		log.Fatal(err)
 	}
 
-	status := resp.StatusCode
+	record, err := cacheClient.queryCache()
 
-	for {
-		if status == 200 {
-			break
-		}
-
-		if status > 300 {
-			return nil, errors.New("Non 20* response from cache.")
-		}
-
-		time.Sleep(3 * time.Second)
-
-		resp, err = client.Do(req)
-
-		status = resp.StatusCode
-
-		if err != nil {
-			log.Print("Do: ", err)
-			return nil, err
-		}
-
-	}
-
-
-	defer resp.Body.Close()
-
-	var record transactionsEnvelope
-
-	if err := json.NewDecoder(resp.Body).Decode(&record); err != nil {
-		log.Println(err)
+	if err != nil {
+		return nil, errors.New("Unable to query cache")
 	}
 
 	var s map[string]*dailySpending
@@ -92,7 +55,7 @@ func Get(url string) (map[string]float64, error) {
 
 	for k, v := range s {
 		// determine average and add to result map.
-		avg := math.Abs(float64((*v.TotalSpend/1000) / *v.TotalTransactions))
+		avg := math.Abs(float64((*v.TotalSpend / 1000) / *v.TotalTransactions))
 		result[k] = avg
 	}
 
