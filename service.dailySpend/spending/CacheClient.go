@@ -1,4 +1,4 @@
-package Spending
+package spending
 
 import (
 	"encoding/json"
@@ -8,25 +8,26 @@ import (
 	"time"
 )
 
-// Structure used for querying the cache.
+// CacheClient structure used for querying the cache.
 type CacheClient struct {
-	CacheUrl string
+	CacheURL string
 }
 
 // Singleton variable
 var client *CacheClient
 
-// Singleton get
+// GetCacheClient singleton get
 func GetCacheClient() (*CacheClient, error) {
 
 	if client == nil {
-		return &CacheClient{}, errors.New("No cache client initiated.")
-	} else {
-		return client, nil
+		return &CacheClient{}, errors.New("no cache client initiated")
 	}
+
+	return client, nil
+
 }
 
-// Singleton new
+// NewCacheClient singleton new
 func NewCacheClient(url string) *CacheClient {
 	client = &CacheClient{url}
 
@@ -36,7 +37,7 @@ func NewCacheClient(url string) *CacheClient {
 // query function
 func (c *CacheClient) queryCache() (transactionsEnvelope, error) {
 
-	req, err := http.NewRequest("GET", c.CacheUrl, nil)
+	req, err := http.NewRequest("GET", c.CacheURL, nil)
 
 	if err != nil {
 		log.Fatal("NewRequest: ", err)
@@ -59,7 +60,7 @@ func (c *CacheClient) queryCache() (transactionsEnvelope, error) {
 		}
 
 		if status > 300 {
-			return transactionsEnvelope{}, errors.New("Non 20* response from cache.")
+			return transactionsEnvelope{}, errors.New("non 20* response from cache")
 		}
 
 		time.Sleep(3 * time.Second)

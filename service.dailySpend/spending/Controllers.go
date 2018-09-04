@@ -1,4 +1,4 @@
-package Spending
+package spending
 
 import (
 	"encoding/json"

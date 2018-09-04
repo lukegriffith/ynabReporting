@@ -1,4 +1,4 @@
-package Spending
+package spending
 
 type dailySpending struct {
 	TotalSpend, TotalTransactions *int
