@@ -11,7 +11,6 @@ import (
 // CacheClient structure used for querying the cache.
 type CacheClient struct {
 	CacheURL string
-	accounts *account
 }
 
 // Singleton variable
@@ -30,10 +29,8 @@ func GetCacheClient() (*CacheClient, error) {
 
 // NewCacheClient singleton new
 func NewCacheClient(url string) *CacheClient {
-	var accs *account
 
-	accs = &account{}
-	client = &CacheClient{url, accs}
+	client = &CacheClient{url}
 
 	return client
 }

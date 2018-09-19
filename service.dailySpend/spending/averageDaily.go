@@ -6,7 +6,6 @@ import (
 	"log"
 	"math"
 	"net/http"
-	"time"
 )
 
 // GetAverageDailySpending is the controller  for responding to HTTP requests.
@@ -54,13 +53,7 @@ func averageDailySpending() (map[string]float64, error) {
 		// Only count if an outgoing.
 		if t.Amount < 0 {
 			// Ynab date structure does not track time.
-			date := t.Date + "T00:00:00+00:00"
-
-			parsedDate, e := time.Parse(time.RFC3339, date)
-
-			if e != nil {
-				log.Fatal("Error: ", e)
-			}
+			parsedDate := getDate(t.Date)
 
 			if val, ok := s[parsedDate.Format("Mon")]; ok {
 				val.AddTo(t.Amount)
