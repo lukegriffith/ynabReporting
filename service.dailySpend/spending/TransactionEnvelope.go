@@ -1,9 +1,5 @@
 package spending
 
-import (
-	"github.com/mitchellh/mapstructure"
-)
-
 type transactionsEnvelope struct {
 	Data struct {
 		Transactions []struct {
@@ -28,61 +24,7 @@ type transactionsEnvelope struct {
 	} `json:"data"`
 }
 
-type Transaction struct {
-	ID                string
-	Date              string
-	Amount            int
-	Memo              string
-	Cleared           string
-	Approved          bool
-	FlagColor         interface{}
-	AccountID         string
-	AccountName       string
-	PayeeID           string
-	PayeeName         string
-	CategoryID        string
-	CategoryName      string
-	TransferAccountID string
-	ImportID          string
-	Deleted           bool
-	Subtransactions   []interface{}
-}
-
-func (t *transactionsEnvelope) getAccounts() []string {
-
-	var accMap []string
-
-	for _, r := range t.Data.Transactions {
-
-		for _, a := range accMap {
-
-			if a == r.AccountName {
-				continue
-			}
-
-			accMap = append(accMap, r.AccountName)
-		}
-	}
-
-	return accMap
-}
-
 func (t *transactionsEnvelope) getTransactionsForAccount(AccountName string) []Transaction {
-
-	var transactions []Transaction
-
-	for _, e := range t.Data.Transactions {
-		if e.AccountName == AccountName {
-
-			var trn Transaction
-
-			if err := mapstructure.Decode(e, trn); err != nil {
-				panic(err)
-			}
-
-			transactions = append(transactions, trn)
-		}
-	}
 
 	return transactions
 }

@@ -6,11 +6,15 @@ import (
 	"log"
 	"net/http"
 	"time"
+
+	"github.com/mitchellh/mapstructure"
 )
 
 // CacheClient structure used for querying the cache.
 type CacheClient struct {
-	CacheURL string
+	CacheURL     string
+	AccountName  string
+	CheckAccount bool
 }
 
 // Singleton variable
@@ -28,21 +32,21 @@ func GetCacheClient() (*CacheClient, error) {
 }
 
 // NewCacheClient singleton new
-func NewCacheClient(url string) *CacheClient {
+func NewCacheClient(url string, account string) *CacheClient {
 
-	client = &CacheClient{url}
+	client = &CacheClient{url, account, false}
 
 	return client
 }
 
 // query function
-func (c *CacheClient) queryCache() (transactionsEnvelope, error) {
+func (c *CacheClient) queryCache() ([]Transaction, error) {
 
 	req, err := http.NewRequest("GET", c.CacheURL, nil)
 
 	if err != nil {
 		log.Fatal("NewRequest: ", err)
-		return transactionsEnvelope{}, err
+		return nil, err
 	}
 
 	client := &http.Client{}
@@ -61,7 +65,7 @@ func (c *CacheClient) queryCache() (transactionsEnvelope, error) {
 		}
 
 		if status > 300 {
-			return transactionsEnvelope{}, errors.New("non 20* response from cache")
+			return nil, errors.New("non 20* response from cache")
 		}
 
 		time.Sleep(3 * time.Second)
@@ -72,7 +76,7 @@ func (c *CacheClient) queryCache() (transactionsEnvelope, error) {
 
 		if err != nil {
 			log.Print("Do: ", err)
-			return transactionsEnvelope{}, err
+			return nil, err
 		}
 
 	}
@@ -85,6 +89,52 @@ func (c *CacheClient) queryCache() (transactionsEnvelope, error) {
 		log.Println(err)
 	}
 
-	return record, nil
+	var transactions []Transaction
 
+	for _, e := range record.Data.Transactions {
+		if c.CheckAccount && e.AccountName == c.AccountName {
+
+			var trn Transaction
+
+			if err := mapstructure.Decode(e, trn); err != nil {
+				panic(err)
+			}
+
+			transactions = append(transactions, trn)
+		}
+	}
+
+	return transactions, nil
+}
+
+func (c *CacheClient) getAccounts() []string {
+
+	var accMap []string
+
+	c.CheckAccount = false
+
+	accs, err := c.queryCache()
+
+	if err != nil {
+		log.Panic("Unable to query cache.")
+	}
+
+	// Not sure this works. Meant to be iterating through accounts and adding to an array if it doesn't exist.
+	for _, r := range accs {
+
+		found := false
+
+		for _, a := range accMap {
+
+			if a == r.AccountName {
+				found = true
+				break
+			}
+
+		}
+
+		accMap = append(accMap, r.AccountName)
+	}
+
+	return accMap
 }
