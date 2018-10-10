@@ -52,7 +52,7 @@ function main() {
   let cache_days = process.env.cache_days
   let LastCache = 0; 
 
-  console.log("Cache Service Started")
+  console.log("Cache Service Started on :" + port)
   console.log("Budget id: "+ budget_id)
   console.log("TTL: " + TTL )
 

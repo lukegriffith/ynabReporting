@@ -7,9 +7,9 @@ import (
 )
 
 func main() {
-	cache_url := "http://localhost:8080/"
+	cacheURL := "http://localhost:8080/"
 
-	_ = spending.NewCacheClient(cache_url)
+	_ = spending.NewCacheClient(cacheURL)
 
 	http.HandleFunc("/avgSpending", spending.GetAverageDailySpending)
 	http.HandleFunc("/last7", spending.GetLast7Days)
