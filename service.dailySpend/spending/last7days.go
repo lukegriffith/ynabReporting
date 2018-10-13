@@ -38,7 +38,7 @@ func last7Days() (map[string]float64, error) {
 		log.Fatal(err)
 	}
 
-	record, err := cacheClient.queryCache()
+	transactions, err := cacheClient.QueryCache()
 
 	if err != nil {
 		return nil, errors.New("Unable to query cache")
@@ -53,7 +53,7 @@ func last7Days() (map[string]float64, error) {
 	lastWeek := time.Now().AddDate(0, 0, -8)
 	now := time.Now()
 
-	for _, t := range record.Data.Transactions {
+	for _, t := range transactions {
 		// Only count if an outgoing.
 		if t.Amount < 0 {
 			// Ynab date structure does not track time.

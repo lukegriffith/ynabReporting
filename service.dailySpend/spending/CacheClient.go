@@ -6,8 +6,6 @@ import (
 	"log"
 	"net/http"
 	"time"
-
-	"github.com/mitchellh/mapstructure"
 )
 
 // CacheClient structure used for querying the cache.
@@ -39,8 +37,8 @@ func NewCacheClient(url string, account string) *CacheClient {
 	return client
 }
 
-// query function
-func (c *CacheClient) queryCache() ([]Transaction, error) {
+// QueryCache queries the cache
+func (c *CacheClient) QueryCache() ([]Transaction, error) {
 
 	req, err := http.NewRequest("GET", c.CacheURL, nil)
 
@@ -92,15 +90,9 @@ func (c *CacheClient) queryCache() ([]Transaction, error) {
 	var transactions []Transaction
 
 	for _, e := range record.Data.Transactions {
-		if c.CheckAccount && e.AccountName == c.AccountName {
+		if c.CheckAccount && e.AccountName == c.AccountName || !c.CheckAccount {
 
-			var trn Transaction
-
-			if err := mapstructure.Decode(e, trn); err != nil {
-				panic(err)
-			}
-
-			transactions = append(transactions, trn)
+			transactions = append(transactions, Transaction(e))
 		}
 	}
 
@@ -113,27 +105,33 @@ func (c *CacheClient) getAccounts() []string {
 
 	c.CheckAccount = false
 
-	accs, err := c.queryCache()
+	transactions, err := c.QueryCache()
 
 	if err != nil {
 		log.Panic("Unable to query cache.")
 	}
 
-	// Not sure this works. Meant to be iterating through accounts and adding to an array if it doesn't exist.
-	for _, r := range accs {
-
+	// Iterate all transactions, to determine the set of account names.
+	for _, t := range transactions {
+		// Use boolean to determine if loop should be continued
 		found := false
 
 		for _, a := range accMap {
-
-			if a == r.AccountName {
+			// Check each account in accMap, compare to current transaction account name.
+			if a == t.AccountName {
+				// If found, set found to true and break loop.
 				found = true
 				break
 			}
 
 		}
 
-		accMap = append(accMap, r.AccountName)
+		if found {
+			// Continue to next transaction if AccountName is found.
+			continue
+		}
+
+		accMap = append(accMap, t.AccountName)
 	}
 
 	return accMap
