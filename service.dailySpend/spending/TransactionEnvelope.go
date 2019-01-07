@@ -23,8 +23,3 @@ type transactionsEnvelope struct {
 		} `json:"transactions"`
 	} `json:"data"`
 }
-
-//func (t *transactionsEnvelope) getTransactionsForAccount(AccountName string) []Transaction {
-//
-//	return transactions
-//}
