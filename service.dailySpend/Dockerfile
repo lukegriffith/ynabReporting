@@ -5,7 +5,7 @@ WORKDIR /go/src/github.com/lukemgriffith/ynabReporting/service.dailySpend
 RUN make
 
 
-FROM alpine:latest
+FROM alpine
 
-COPY --from=builder /go/bin/dailySpend /go/bin/dailySpend
-CMD ["/go/bin/dailySpend"]
+COPY --from=builder /go/bin/dailySpend .
+#CMD ["./dailySpend"]

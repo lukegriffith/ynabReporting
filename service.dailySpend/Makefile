@@ -1,6 +1,5 @@
 default: build
 
 build: 	
-	go build -o `go env GOPATH`/bin/dailySpend
+	GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -o `go env GOPATH`/bin/dailySpend
 
-	
