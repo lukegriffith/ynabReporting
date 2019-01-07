@@ -1,4 +1,4 @@
 default: build
 
 build: 	
-	go build -o ~/go/bin/dailySpend
+	go build -o `go env GOPATH`/bin/dailySpend
