@@ -25,14 +25,18 @@ func GetCacheClient() (*CacheClient, error) {
 		return &CacheClient{}, errors.New("no cache client initiated")
 	}
 
+	log.Println(client)
+
 	return client, nil
 
 }
 
 // NewCacheClient singleton new
-func NewCacheClient(url string, account string) *CacheClient {
+func NewCacheClient(url string, account string, check bool) *CacheClient {
 
-	client = &CacheClient{url, account, false}
+	log.Println(url, account, check)
+
+	client = &CacheClient{url, account, check}
 
 	return client
 }
@@ -90,8 +94,11 @@ func (c *CacheClient) QueryCache() ([]Transaction, error) {
 	var transactions []Transaction
 
 	for _, e := range record.Data.Transactions {
-		if c.CheckAccount && e.AccountName == c.AccountName || !c.CheckAccount {
 
+		log.Println(c.CheckAccount, e.AccountName, c.AccountName)
+
+		if c.CheckAccount && e.AccountName == c.AccountName || !c.CheckAccount {
+			log.Println("Appending")
 			transactions = append(transactions, Transaction(e))
 		}
 	}
@@ -99,7 +106,7 @@ func (c *CacheClient) QueryCache() ([]Transaction, error) {
 	return transactions, nil
 }
 
-func (c *CacheClient) getAccounts() []string {
+func (c *CacheClient) GetAccounts() []string {
 
 	var accMap []string
 

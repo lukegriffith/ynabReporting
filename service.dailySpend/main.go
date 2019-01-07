@@ -16,11 +16,15 @@ func testClient(w http.ResponseWriter, r *http.Request) {
 		log.Fatal(err)
 	}
 
-	s, err := cacheClient.QueryCache()
+	//s, err := cacheClient.QueryCache()
 
-	jsonString, err := json.Marshal(s)	
+	var a = cacheClient.GetAccounts()
 
-	fmt.Println(s)
+	_ = spending.NewCacheClient("http://localhost:32776/", "", true)
+
+	jsonString, err := json.Marshal(a)
+
+	fmt.Println(jsonString)
 
 	w.Write(jsonString)
 
@@ -32,7 +36,7 @@ func main() {
 	port := ":8081"
 
 	fmt.Println("Webserver running on port " + port)
-	_ = spending.NewCacheClient(cacheURL, "")
+	_ = spending.NewCacheClient(cacheURL, "", false)
 
 	http.HandleFunc("/avgSpending", spending.GetAverageDailySpending)
 	http.HandleFunc("/last7", spending.GetLast7Days)
