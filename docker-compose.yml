@@ -1,0 +1,35 @@
+version: '3'
+services:
+  ynabcache:
+
+    build:
+      context: ./service.ynabCache
+
+
+    ports: 
+      - "8080"
+
+    networks:
+      - backend
+
+    deploy:
+      replicas: 1
+
+    expose:
+      - "8080"
+
+    env_file:
+      - ./service.ynabCache/.env
+
+#  dailySpend:
+#    image: name:dailySpend
+#    ports:
+#      - "8081"
+#    networks:
+#      - backend
+#    deploy:
+#      replicas: 1
+
+networks:
+  backend:
+
