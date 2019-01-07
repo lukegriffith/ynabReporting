@@ -34,6 +34,8 @@ services:
     deploy:
       replicas: 1
 
+    restart: always
+
 networks:
   backend:
 

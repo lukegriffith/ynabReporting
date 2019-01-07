@@ -8,4 +8,4 @@ RUN make
 FROM alpine
 
 COPY --from=builder /go/bin/dailySpend .
-#CMD ["./dailySpend"]
+CMD ["./dailySpend"]
