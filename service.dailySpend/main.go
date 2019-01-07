@@ -18,7 +18,7 @@ func testClient(w http.ResponseWriter, r *http.Request) {
 
 	s, err := cacheClient.QueryCache()
 
-	jsonString, err := json.Marshal(s)
+	jsonString, err := json.Marshal(s)	
 
 	fmt.Println(s)
 
@@ -27,7 +27,7 @@ func testClient(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
-	cacheURL := "http://localhost:8080/"
+	cacheURL := "http://localhost:32776/"
 
 	port := ":8081"
 
