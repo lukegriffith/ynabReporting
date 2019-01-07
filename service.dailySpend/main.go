@@ -8,7 +8,7 @@ import (
 )
 
 func main() {
-	cacheURL := "http://localhost:32777/"
+	cacheURL := "http://ynabcache:8080/"
 
 	port := ":8081"
 
